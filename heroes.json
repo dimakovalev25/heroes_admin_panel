@@ -1,0 +1,35 @@
+{
+    "heroes": [
+        {
+            "id": 1,
+            "name": "Iron Man",
+            "description": "from Marvel!",
+            "element": "all"
+        },
+        {
+            "id": 2,
+            "name": "Aqua Men",
+            "description": "from DC!",
+            "element": "water"
+        },
+        {
+            "id": 3,
+            "name": "Super girls",
+            "description": "from DC",
+            "element": "all"
+        },
+        {
+            "id": 4,
+            "name": "Groot",
+            "description": "raketa's friend",
+            "element": "earth"
+        }
+    ],
+    "filters": [
+        "all",
+        "fire",
+        "water",
+        "wind",
+        "earth"
+    ]
+}
