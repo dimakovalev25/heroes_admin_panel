@@ -1,4 +1,7 @@
-const HeroesListItem = ({name, description, element}) => {
+const HeroesListItem = (props) => {
+    // console.log(props)
+
+    const {id, name, description, element} = props;
 
     let elementClassName;
 
@@ -19,16 +22,22 @@ const HeroesListItem = ({name, description, element}) => {
             elementClassName = 'bg-warning bg-gradient';
     }
 
+    const deleteItem = () => {
+        console.log(id)
+    }
+
     return (
         <>
             <li
                 className={`card flex-row mb-2 shadow-lg text-white ${elementClassName}`}>
                 <div className="card-body">
                     <h5 className="card-title">{name}</h5>
-                {/*<p className="card-text">{description}</p>*/}
+                    <p className="card-text">{description}</p>
 
                 </div>
-                    <button type="button" className={'btn btn-primary'} aria-label="Close"> DELETE!</button>
+                <button onClick={deleteItem} type="button" className={'btn btn-primary'}
+                        aria-label="Close"> DELETE!
+                </button>
             </li>
 
         </>

@@ -11,51 +11,16 @@ import Spinner from '../spinner/Spinner';
 // Усложненная задача:
 // Удаление идет и с json файла при помощи метода DELETE
 
-
-const heroes = [
-    {
-        "id": 1,
-        "name": "Iron Man",
-        "description": "from Marvel!",
-        "element": "all"
-    },
-    {
-        "id": 2,
-        "name": "Aqua Men",
-        "description": "from DC!",
-        "element": "water"
-    },
-    {
-        "id": 3,
-        "name": "Super girls",
-        "description": "from DC",
-        "element": "all"
-    },
-    {
-        "id": 4,
-        "name": "Groot",
-        "description": "raketa's friend",
-        "element": "earth"
-    }
-]
-const filters = [
-    "all",
-    "fire",
-    "water",
-    "wind",
-    "earth"
-]
-
-
 const HeroesList = () => {
-    const {heroes, heroesLoadingStatus} = useSelector(state => state);
-    console.log(heroes)
+    const {heroes, filterHero, heroesLoadingStatus, addHero} = useSelector(state => state);
+    const state = useSelector(state => state)
+    console.log(state)
+
     const dispatch = useDispatch();
+
     const {request} = useHttp();
 
-
     const [heroesData, setHeroesData] = useState()
-    // console.log(heroesData)
 
     //push on firebase!
     // useEffect(() => {
@@ -70,11 +35,17 @@ const HeroesList = () => {
     // }, [])
 
     //and get data from firebase
+    // setFilter(activeFilter)
+
 
     useEffect(() => {
+        console.log('useEffect heroList')
+
         const fetchHero = async () => {
+            dispatch(heroesFetching());
             const response = await fetch('https://react-homework-d18ef-default-rtdb.europe-west1.firebasedatabase.app/heroes.json')
             const responseData = await response.json();
+
             const loadedHeroes = [];
             for (const key in responseData) {
                 loadedHeroes.push({
@@ -84,13 +55,20 @@ const HeroesList = () => {
                     element: responseData[key].element,
                 })
             }
+
             setHeroesData(loadedHeroes)
+            dispatch(heroesFetched(loadedHeroes))
         }
         fetchHero()
-    }, [])
+        dispatch(heroesFetchingError())
+
+
+
+    }, [addHero])
 
     //---------------------------------------------------------------------------
     // get data from heroes.json
+
     // useEffect(() => {
     //     dispatch(heroesFetching());
     //     request("http://localhost:3001/heroes")
@@ -99,15 +77,6 @@ const HeroesList = () => {
     //
     //     // eslint-disable-next-line
     // }, []);
-
-    useEffect(() => {
-        dispatch(heroesFetching());
-        request("https://react-homework-d18ef-default-rtdb.europe-west1.firebasedatabase.app/heroes.json")
-            .then(data => dispatch(heroesFetched(data)))
-            .catch(() => dispatch(heroesFetchingError()))
-
-        // eslint-disable-next-line
-    }, []);
 
 
     if (heroesLoadingStatus === "loading") {
@@ -121,12 +90,13 @@ const HeroesList = () => {
             return <h5 className="text-center mt-5">not find</h5>
         }
 
-        return arr.map(({id, ...props}) => {
-            return <HeroesListItem key={id} {...props}/>
+        return arr.map(({...props}) => {
+            return <HeroesListItem {...props}/>
         })
     }
 
-    const elements = renderHeroesList(heroes);
+    // const elements = renderHeroesList(heroes);
+    const elements = renderHeroesList(filterHero);
     return (
         <ul>
             {elements}
