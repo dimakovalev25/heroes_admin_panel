@@ -19,14 +19,8 @@ import {addHero} from "../../actions";
 const HeroesAddForm = () => {
     const filters = useSelector(state => state.filters)
     const [newHero, setNewHero] = useState(null)
-    console.log(newHero)
-    // console.log(filters)
 
     const dispatch = useDispatch()
-
-    useEffect(() => {
-        dispatch(addHero(newHero))
-    }, [newHero])
 
     useEffect(() => {
         const fetchNewHero = async () => {
@@ -38,23 +32,24 @@ const HeroesAddForm = () => {
             });
 
             const responseData = await response.json();
-            // console.log(responseData)
 
         }
         fetchNewHero()
+        dispatch(addHero(newHero))
 
     }, [newHero])
 
-    const createHero = (e) => {
-        e.preventDefault()
-        console.log('createHero')
-    }
+    // const createHero = (e) => {
+    //     e.preventDefault()
+    //     console.log('createHero')
+    // }
 
     const formik = useFormik({
         initialValues: {
             name: '',
             description: '',
-            element: ''
+            element: '',
+            id: Math.random()
         },
         validationSchema: Yup.object({
             name: Yup.string()
@@ -65,7 +60,8 @@ const HeroesAddForm = () => {
                 .min(2, 'min 2 symbols')
                 .max(70, 'max 70 symbols')
                 .required('required field'),
-            element: Yup.string().required('choose element')
+            element: Yup.string().required('choose element'),
+            id: Yup.string()
         }),
         // onSubmit: values => console.log(JSON.stringify(values, null, 2)),
         onSubmit: values => setNewHero(values),

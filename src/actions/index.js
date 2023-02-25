@@ -50,3 +50,11 @@ export const addHero = (data) => {
 
     }
 }
+
+export const deleteHero = (id) => {
+    return {
+        type: 'DELETE_HERO',
+        payload: id
+
+    }
+}
